@@ -1,0 +1,2 @@
+# localSecureStorage
+localStorage with crypto
