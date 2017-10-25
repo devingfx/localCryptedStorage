@@ -1,4 +1,4 @@
-# localSecureStorage
+# localCryptedStorage
 localStorage with crypto
 
 ## install in DevTools
@@ -33,7 +33,10 @@ let localCryptedStorage = new Proxy(localStorage,{
 
 ```
 
+## use it
 Then each time you need to write / read crypted storage, you need first to install the localCryptedStorage on the same domain:
+
+
 
 ```
 eval( localStorage.localCryptedStorage )
@@ -44,3 +47,59 @@ And use it:
 ```
 localCryptedStorage.foo = 42
 ```
+You will be prompted to choose a password for this data (you change for each data or use the same, you see! ;) )
+The fist alert is here to get the focus out of the devtool because `promp()` is blocked if not focus in the tab...
+![](alert.png)
+![](promp.png)
+
+Using normal localStorage you can see the encrypted data:
+```
+> localStorage.foo
+< "4O103O90O88O129O126O99O252O66O69O142O35O106O35O47O6O76O183"
+```
+
+Then retreieve the data with a promise, you will be prompted back for the password:
+```
+> localCryptedStorage.foo.then( data=> console.log(data) )
+< Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
+< 42
+```
+If the password is not good the promise rejects:
+```
+localCryptedStorage.foo.then( data=> console.log(data) )
+Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
+(index):1 Uncaught (in promise) DOMException
+```
+
+## write sensible data avoiding appearance in devtool's console history
+
+You may not want to leave senssible data in you devtool's history
+![](history.png)
+First create an empty var in `localStorage` where to put the data
+
+```
+localStorage.mySecretClass = ''
+```
+
+Go to the \[Application] tab in [ > Local Storage] and copy paste your class directly in the text field:
+![](application-tab.png)
+
+Then replace it with the crypted one (get prompted):
+```
+localCryptedStorage.mySecretClass = localStorage.mySecretClass
+```
+
+To use the secret class later:
+```
+localCryptedStorage.mySecretClass.then(eval)
+//
+new MySecretClass( ... )
+```
+
+## use case
+Let's say I want to store my github's credentials to have a bookmarlet signing me up when I'm on github's login page.
+_(bookmarklet not covered here)_
+The bookmarklet uses localCryptedStorage installed in localStorage to get a `localCryptedStorage.credentials` object.
+
+
+![](localCryptedStorage.png)
