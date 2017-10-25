@@ -1,4 +1,4 @@
-let localCryptedStorage = new Proxy(localStorage,{
+var localCryptedStorage = new Proxy(localStorage,{
 	
 	get:function(o,p){
 		// if( p == "algo" ) return {name: "AES-GCM", iv: Uint8Array.from([120,1,248,135,62,71,87,156,92,67,155,37])}
