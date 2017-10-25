@@ -32,3 +32,15 @@ let localCryptedStorage = new Proxy(localStorage,{
 })`
 
 ```
+
+Then each time you need to write / read crypted storage, you need first to install the localCryptedStorage on the same domain:
+
+```
+eval( localStorage.localCryptedStorage )
+```
+
+And use it:
+
+```
+localCryptedStorage.foo = 42
+```
