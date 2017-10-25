@@ -2,10 +2,10 @@
 localStorage with crypto
 
 ## install in DevTools
-Open your devtool console and paste this:
+Open your devtool console and paste the content of [](localCryptedStorage.js) , this:
 ```
 localStorage.localCryptedStorage = `
-let localCryptedStorage = new Proxy(localStorage,{
+var localCryptedStorage = new Proxy(localStorage,{
 	
 	get:function(o,p){
 		// if( p == "algo" ) return {name: "AES-GCM", iv: Uint8Array.from([120,1,248,135,62,71,87,156,92,67,155,37])}
@@ -49,8 +49,10 @@ localCryptedStorage.foo = 42
 ```
 You will be prompted to choose a password for this data (you change for each data or use the same, you see! ;) )
 The fist alert is here to get the focus out of the devtool because `promp()` is blocked if not focus in the tab...
+
 ![](alert.png)
-![](promp.png)
+
+![](prompt.png)
 
 Using normal localStorage you can see the encrypted data:
 ```
@@ -64,6 +66,9 @@ Then retreieve the data with a promise, you will be prompted back for the passwo
 < Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
 < 42
 ```
+
+![](localCryptedStorage.png)
+
 If the password is not good the promise rejects:
 ```
 localCryptedStorage.foo.then( data=> console.log(data) )
@@ -74,7 +79,9 @@ Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
 ## write sensible data avoiding appearance in devtool's console history
 
 You may not want to leave senssible data in you devtool's history
+
 ![](history.png)
+
 First create an empty var in `localStorage` where to put the data
 
 ```
@@ -82,6 +89,7 @@ localStorage.mySecretClass = ''
 ```
 
 Go to the \[Application] tab in [ > Local Storage] and copy paste your class directly in the text field:
+
 ![](application-tab.png)
 
 Then replace it with the crypted one (get prompted):
@@ -102,4 +110,3 @@ _(bookmarklet not covered here)_
 The bookmarklet uses localCryptedStorage installed in localStorage to get a `localCryptedStorage.credentials` object.
 
 
-![](localCryptedStorage.png)
